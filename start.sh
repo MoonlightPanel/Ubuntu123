@@ -1,19 +1,18 @@
 #!/bin/bash
 set -e
 
-DISK="/data/vm.raw"
+DISK="/data/vm.qcow2"
 IMG="/opt/qemu/ubuntu.img"
 SEED="/opt/qemu/seed.iso"
 
- 
 echo "Creating VM disk..."
-qemu-img convert -f qcow2 -O raw "$IMG" "$DISK"
+qemu-img convert -f qcow2 -O qcow2 "$IMG" "$DISK"
 qemu-img resize "$DISK" 30G
 # Start VM
 qemu-system-x86_64 \
     -m "$RAM"G \
-    -drive file="$DISK",format=raw,if=virtio \
-    -drive file="$SEED",format=raw,if=virtio \
+    -drive file="$DISK",format=qcow2,if=virtio \
+    -drive file="$SEED",format=qcow2,if=virtio \
     -netdev user,id=net0,hostfwd=tcp::2222-:22 \
     -device virtio-net,netdev=net0 \
     -vga virtio \
