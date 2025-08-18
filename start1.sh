@@ -11,14 +11,14 @@ DISK2="$disk1"
 RAM2="$ram1"
 if [ ! -f "$DISK" ]; then
  echo "Creating VM disk..."
- qemu-img convert -f qcow2 -O raw "$IMG" "$DISK"
+ qemu-img convert -f qcow2 -O qcow2 "$IMG" "$DISK"
  qemu-img resize "$DISK" "$DISK2"G
 fi
 # Start VM
 qemu-system-x86_64 \
     -m "$RAM2"G \
-    -drive file="$DISK",format=raw,if=virtio \
-    -drive file="$SEED",format=raw,if=virtio \
+    -drive file="$DISK",format=qcow2,if=virtio \
+    -drive file="$SEED",format=qcow2,if=virtio \
     -netdev user,id=net0,hostfwd=tcp::2222-:22 \
     -device virtio-net,netdev=net0 \
     -vga virtio \
