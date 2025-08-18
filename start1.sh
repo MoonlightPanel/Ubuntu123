@@ -18,7 +18,7 @@ fi
 qemu-system-x86_64 \
     -m "$RAM2"G \
     -drive file="$DISK",format=qcow2,if=virtio \
-    -drive file="$SEED",format=qcow2,if=virtio \
+    -drive file="$SEED",format=raw,if=virtio \
     -netdev user,id=net0,hostfwd=tcp::2222-:22 \
     -device virtio-net,netdev=net0 \
     -vga virtio \
